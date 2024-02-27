@@ -16,7 +16,7 @@ const pool = new Pool({
   port: process.env.DB_PORT || 5432,
 });
 
-const clientId = 'c154';
+const clientId = 'demo';
 const mqttClient = mqtt.connect(process.env.MQTT_BROKER_URL, {
   clientId,
   username: process.env.MQTT_USERNAME || 'biogas',
@@ -28,14 +28,14 @@ const mqttClient = mqtt.connect(process.env.MQTT_BROKER_URL, {
 mqttClient.on('connect', () => {
   console.log('Connected to MQTT broker');
 
-  mqttClient.subscribe('biogas', (err) => {
+  mqttClient.subscribe('#', (err) => {      //Subscribes all the topics "#"
     if (!err) {
-      console.log(`Subscribed to topic: biogas`);
+      console.log(`Subscribed to topic: #`);
     } else {
       console.error(`Error subscribing to topic: ${err}`);
     }
   });
-});
+}); 
 
 mqttClient.on('message', async (receivedTopic, message) => {
   try {
